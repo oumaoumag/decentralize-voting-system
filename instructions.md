@@ -1,77 +1,58 @@
-Sure! Here's your assignment written in **Markdown**:
-# 📚 Lisk Africa Developer’s Bootcamp – Week 3: Data Structures
+# 📚 Lisk Africa Developer’s Bootcamp – Week 3 Assignment
 
-## 📝 Assignment: Create a Basic Todo List in Solidity
+## 🗳️ Build a Decentralized Voting System
 
-In this assignment, you'll create a simple Todo List smart contract to demonstrate key Solidity concepts such as enums, structs, mappings, arrays, and events.
+### 📝 Assignment Overview
 
----
+Build a simple voting smart contract that lets users:
 
-## ✅ Instructions
+- Register candidates
+- Vote for candidates
+- View election results
 
-### 1. Create a Todo Status Enum
+### ✅ Requirements
 
-Define an enum to represent the status of a todo:
+The smart contract must demonstrate the following Solidity concepts:
 
-```solidity
-Pending
-InProgress
-Completed
-````
-
----
-
-### 2. Create a Todo Struct
-
-Create a struct named `Todo` with the following fields:
-
-```solidity
-id (uint)
-content (string)
-status (use the enum from step 1)
-```
+- `struct` to define a `Candidate`
+- `mapping` to store candidates and votes
+- Proper use of `storage`, `memory`, and `calldata`
+- Inheritance to organize functionality into base and derived contracts
 
 ---
 
-### 3. Use a Mapping and Array
+## 1. 🧱 Structs and Mappings
 
-* Use a mapping to store todos by ID:
+### Define a `Candidate` struct with:
+- `uint id`
+- `string name`
+- `uint voteCount`
 
-```solidity
-mapping(uint => Todo)
-```
-
-* Use an array to track all todo IDs:
-
-```solidity
-uint[] public todoIds
-```
+### Mappings:
+- `mapping(uint => Candidate)` to store candidates by ID
+- `mapping(address => bool)` to track which addresses have voted
 
 ---
 
-### 4. Implement Basic Functions
+## 2. 🧮 Functions
 
-* `addTodo(string memory _content)` – Adds a new todo
-* `updateStatus(uint _id, Status _status)` – Updates a todo’s status
-* `getTodo(uint _id)` – Returns a specific todo item
+### `addCandidate(string calldata name)`
+- Only callable by the contract **owner**
+- Adds a new candidate to the list
+
+### `vote(uint candidateId)`
+- Allows an address to vote for a candidate
+- Prevents double voting using the `voters` mapping
+
+### `getCandidate(uint candidateId) public view returns (string memory name, uint voteCount)`
+- Returns a candidate’s details using proper memory allocation
+
+### `getTotalCandidates() public view returns (uint)`
+- Returns the total number of registered candidates
 
 ---
 
-### 5. Add One Simple Event
+## 3. 🧬 Inheritance
 
-Emit an event when a new todo is added:
-
-```solidity
-event TodoAdded(uint id, string content);
-```
-
----
-
-## 🧠 Concepts Covered
-
-```text
-- Enums and Structs
-- Mappings and Arrays
-- Events in Solidity
-- View vs. State-changing functions
-```
+- Create a base contract `Ownable` that stores the owner and includes a `modifier onlyOwner`
+- Inherit from `Ownable` in the `VotingSystem` contract
